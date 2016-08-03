@@ -29,7 +29,8 @@
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/spinnerProjects"
             android:layout_height="30dp"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:prompt="@string/title">
 
         </android.support.v7.widget.AppCompatSpinner>
 

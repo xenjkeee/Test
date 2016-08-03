@@ -4,6 +4,6 @@
     <group>
         <item
             android:id="@+id/deleteProject"
-            android:title="delete"/>
+            android:title="@string/delete"/>
     </group>
 </menu>

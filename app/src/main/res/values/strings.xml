@@ -16,5 +16,6 @@
     <string name="projects">Projects</string>
     <string name="gallery">Gallery</string>
     <string name="some_description">img button</string>
+    <string name="delete">delete</string>
 
 </resources>

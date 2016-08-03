@@ -34,7 +34,6 @@ public class SendActivity extends AppCompatActivity {
 
         Spinner spinner = (Spinner) findViewById(R.id.spinnerProjects);
         spinner.setAdapter(adapter);
-        spinner.setPrompt(getResources().getString(R.string.title));
         spinner.setSelection(0);
 
         Button cancel = (Button) findViewById(R.id.btn_cancel);
