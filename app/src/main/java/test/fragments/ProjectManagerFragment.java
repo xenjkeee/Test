@@ -21,6 +21,11 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 
 
+import butterknife.Bind;
+import butterknife.BindString;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.internal.ButterKnifeProcessor;
 import test.Constants;
 import test.adapters.ItemAdapter;
 import test.R;
@@ -36,8 +41,23 @@ public class ProjectManagerFragment extends Fragment {
     private SharedPreferences.Editor preferencesEditor;
     private List<String> projectsList;
     private ItemAdapter adapter;
-    private RelativeLayout projectsNotFound;
-    private RelativeLayout projectsFound;
+
+    @Bind(R.id.no_projects)
+    protected RelativeLayout projectsNotFound;
+    @Bind(R.id.projects_found)
+    protected RelativeLayout projectsFound;
+    @Bind(R.id.projectsList)
+    protected ListView listView;
+
+    @BindString(R.string.no_scanner)
+    protected String noScanner;
+    @BindString(R.string.download_scanner_activity)
+    protected  String downloadScanner;
+    @BindString(R.string.yes)
+    protected String yesDownload;
+    @BindString(R.string.no)
+    protected String noDownload;
+
 
     private void applyChangesPreferencesToList() {
         projectsList.clear();
@@ -62,8 +82,7 @@ public class ProjectManagerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.project_manager_fragment, container, false);
 
-        projectsNotFound = (RelativeLayout) rootView.findViewById(R.id.no_projects);
-        projectsFound = (RelativeLayout) rootView.findViewById(R.id.projects_found);
+        ButterKnife.bind(this,rootView);
 
         preferences = getActivity().getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
         preferencesEditor = preferences.edit();
@@ -74,35 +93,24 @@ public class ProjectManagerFragment extends Fragment {
         switchLayouts();
         adapter = new ItemAdapter(getActivity(),projectsList,new DeleteProjectOnClickListener());
 
-        ListView listView = (ListView) rootView.findViewById(R.id.projectsList);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
-        ImageButton button = (ImageButton) rootView.findViewById(R.id.addProject);
-        button.setOnClickListener(new AddProjectOnClickListener());
-        ImageButton button1 = (ImageButton) rootView.findViewById(R.id.addProject1);
-        button1.setOnClickListener(new AddProjectOnClickListener());
-
 
         return rootView;
     }
 
-    private class AddProjectOnClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            try {
-                Intent intent = new Intent(Constants.ACTION_SCAN);
-                intent.putExtra(Constants.SCAN_MODE, Constants.QR_CODE_MODE);
-                startActivityForResult(intent, 0);
-            } catch (ActivityNotFoundException e) {
-                showDialog(getActivity(), getResources().getString(R.string.no_scanner),
-                        getResources().getString(R.string.download_scanner_activity),
-                        getResources().getString(R.string.yes), getResources().getString(R.string.no))
-                        .show();
-            }
+    @OnClick({R.id.addProject,R.id.addProject1})
+    public void addProject(View view) {
+        try {
+            Intent intent = new Intent(Constants.ACTION_SCAN);
+            intent.putExtra(Constants.SCAN_MODE, Constants.QR_CODE_MODE);
+            startActivityForResult(intent, 0);
+        } catch (ActivityNotFoundException e) {
+            showDialog(getActivity(), noScanner,downloadScanner,yesDownload,noDownload)
+                    .show();
         }
     }
+
 
 
 
@@ -187,7 +195,6 @@ public class ProjectManagerFragment extends Fragment {
         popupMenu.show();
     }
     public class DeleteProjectOnClickListener implements View.OnClickListener {
-
         private String value;
 
         public void setValue(String value) {

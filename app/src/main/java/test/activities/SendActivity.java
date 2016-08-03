@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import test.Constants;
 import test.service.JsonParser;
 import test.R;
@@ -18,10 +21,14 @@ import java.util.HashSet;
 
 public class SendActivity extends AppCompatActivity {
 
+    @Bind(R.id.spinnerProjects)
+    protected Spinner spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send);
+        ButterKnife.bind(this);
 
         SharedPreferences preferences = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
         ArrayList<String> projectList = new ArrayList<>();
@@ -32,23 +39,17 @@ public class SendActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,projectList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerProjects);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
 
-        Button cancel = (Button) findViewById(R.id.btn_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        Button send= (Button) findViewById(R.id.btn_send);
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+    }
+    @OnClick(R.id.btn_send)
+    public void send(View view) {
+        finish();
+    }
+
+    @OnClick(R.id.btn_cancel)
+    public void cancel(View view) {
+        finish();
     }
 }

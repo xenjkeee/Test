@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import test.R;
 import test.activities.SendActivity;
 import test.adapters.ImageAdapter;
@@ -22,13 +24,14 @@ import java.util.ArrayList;
 public class GalleryFragment extends Fragment {
     private ArrayList<String> images;
 
+    @Bind(R.id.galleryGridView)
+    protected GridView gallery;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.gallery_fragment, container, false);
-
-        GridView gallery = (GridView) rootView.findViewById(R.id.galleryGridView);
+        ButterKnife.bind(this,rootView);
         images = new ArrayList<>();
         gallery.setAdapter(new ImageAdapter(getActivity(),images, getAllShownImagesPath(getActivity())));
 

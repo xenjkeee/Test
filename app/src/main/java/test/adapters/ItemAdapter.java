@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import test.R;
 import test.fragments.ProjectManagerFragment;
 import test.service.JsonParser;
@@ -52,8 +54,7 @@ public class ItemAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = inflater.inflate(R.layout.project_item, parent, false);
-            viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) convertView.findViewById(R.id.project_title);
+            viewHolder = new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
         }else{
@@ -65,8 +66,13 @@ public class ItemAdapter extends BaseAdapter {
         viewHolder.textView.setText(JsonParser.getProjectName(objects.get(position)));
         return convertView;
     }
-    private static class ViewHolder {
-        private TextView textView;
+    protected static class ViewHolder {
+        @Bind(R.id.project_title)
+        public TextView textView;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this,view);
+        }
     }
 
 }

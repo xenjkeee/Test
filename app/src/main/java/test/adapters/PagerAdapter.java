@@ -1,5 +1,6 @@
 package test.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
+import butterknife.ButterKnife;
 import test.R;
 import test.fragments.GalleryFragment;
 import test.fragments.ProjectManagerFragment;
@@ -17,12 +20,16 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     private final List<CharSequence> titles;
     private final List<Fragment> fragments;
 
+    @BindString(R.string.projects)
+    protected String projects;
+    @BindString(R.string.gallery)
+    protected String gallery;
+
     public PagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        titles = new ArrayList<>();
-        Resources resources = context.getResources();
-        titles.add(resources.getString(R.string.projects));
-        titles.add(resources.getString(R.string.gallery));
+        ButterKnife.bind(this,(Activity) context);
+        titles = new ArrayList<CharSequence>(){{add(projects);add(gallery);}};
+
         fragments = new ArrayList<>();
         fragments.add(new ProjectManagerFragment());
         fragments.add(new GalleryFragment());
