@@ -11,19 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import test.R;
 import test.activities.SendActivity;
+import test.adapters.ImageAdapter;
 
 import java.util.ArrayList;
 
-/**
- * Created by Стас on 02.08.2016.
- */
 public class GalleryFragment extends Fragment {
     private ArrayList<String> images;
 
@@ -34,8 +29,8 @@ public class GalleryFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.gallery_fragment, container, false);
 
         GridView gallery = (GridView) rootView.findViewById(R.id.galleryGridView);
-
-        gallery.setAdapter(new ImageAdapter(getActivity()));
+        images = new ArrayList<>();
+        gallery.setAdapter(new ImageAdapter(getActivity(),images, getAllShownImagesPath(getActivity())));
 
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -43,99 +38,39 @@ public class GalleryFragment extends Fragment {
             public void onItemClick(AdapterView<?> arg0, View arg1,
                                     int position, long arg3) {
                 if (null != images && !images.isEmpty() ) {
-
-
                     Intent SendIntent = new Intent(getActivity(), SendActivity.class);
                     startActivity(SendIntent);
-
-
                 }
 
 
             }
         });
-
-
         return rootView;
     }
 
+    private ArrayList<String> getAllShownImagesPath(Activity activity) {
+        Uri uri;
+        Cursor cursor;
+        int column_index_data;
+        ArrayList<String> listOfAllImages = new ArrayList<>();
+        String absolutePathOfImage;
+        uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-    private class ImageAdapter extends BaseAdapter {
+        String[] projection = {MediaStore.MediaColumns.DATA,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
-        /** The context. */
-        private Activity context;
+        cursor = activity.getContentResolver().query(uri, projection, null,
+                null, null);
 
-        /**
-         * Instantiates a new image adapter.
-         *
-         * @param localContext
-         *            the local context
-         */
-        public ImageAdapter(Activity localContext) {
-            context = localContext;
-            images = getAllShownImagesPath(context);
-        }
-
-        public int getCount() {
-            return images.size();
-        }
-
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(final int position, View convertView,
-                            ViewGroup parent) {
-            ImageView picturesView;
-            if (convertView == null) {
-                picturesView = new ImageView(context);
-                picturesView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                picturesView
-                        .setLayoutParams(new GridView.LayoutParams(270, 270));
-
-            } else {
-                picturesView = (ImageView) convertView;
-            }
-
-            Glide.with(context).load(images.get(position))
-                    .placeholder(R.drawable.ic_attachment).centerCrop()
-                    .into(picturesView);
-
-            return picturesView;
-        }
-
-        /**
-         * Getting All Images Path.
-         *
-         * @param activity
-         *            the activity
-         * @return ArrayList with images Path
-         */
-        private ArrayList<String> getAllShownImagesPath(Activity activity) {
-            Uri uri;
-            Cursor cursor;
-            int column_index_data, column_index_folder_name;
-            ArrayList<String> listOfAllImages = new ArrayList<String>();
-            String absolutePathOfImage = null;
-            uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
-            String[] projection = { MediaStore.MediaColumns.DATA,
-                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
-
-            cursor = activity.getContentResolver().query(uri, projection, null,
-                    null, null);
-
+        if (cursor != null) {
             column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
             while (cursor.moveToNext()) {
                 absolutePathOfImage = cursor.getString(column_index_data);
 
                 listOfAllImages.add(absolutePathOfImage);
             }
-            return listOfAllImages;
+            cursor.close();
         }
+        return listOfAllImages;
     }
 }

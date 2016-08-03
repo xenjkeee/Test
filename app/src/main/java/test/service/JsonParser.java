@@ -3,9 +3,8 @@ package test.service;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by Стас on 28.07.2016.
- */
+import test.Constants;
+
 public class JsonParser {
     public static String getProjectName(String json) {
         try {
