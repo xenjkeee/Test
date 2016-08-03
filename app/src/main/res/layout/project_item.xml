@@ -23,5 +23,6 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/ic_menu"
         android:layout_weight="0"
-        android:padding="6dp"/>
+        android:padding="6dp"
+        android:contentDescription="@string/some_description" />
 </LinearLayout>

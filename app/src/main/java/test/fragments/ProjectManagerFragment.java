@@ -96,8 +96,8 @@ public class ProjectManagerFragment extends Fragment {
                 intent.putExtra(Constants.SCAN_MODE, Constants.QR_CODE_MODE);
                 startActivityForResult(intent, 0);
             } catch (ActivityNotFoundException e) {
-                showDialog(getActivity(), getResources().getString(R.string.no_scaner),
-                        getResources().getString(R.string.download_scaner_activity),
+                showDialog(getActivity(), getResources().getString(R.string.no_scanner),
+                        getResources().getString(R.string.download_scanner_activity),
                         getResources().getString(R.string.yes), getResources().getString(R.string.no))
                         .show();
             }

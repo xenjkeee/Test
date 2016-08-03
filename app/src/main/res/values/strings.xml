@@ -9,11 +9,12 @@
     <string name="edit_screenshot">Edit screenshot</string>
     <string name="cancel">Cancel</string>
     <string name="send">Send</string>
-    <string name="no_scaner">No Scanner Found</string>
-    <string name="download_scaner_activity">Download a scanner code activity?</string>
+    <string name="no_scanner">No Scanner Found</string>
+    <string name="download_scanner_activity">Download a scanner code activity?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="projects">Projects</string>
     <string name="gallery">Gallery</string>
+    <string name="some_description">img button</string>
 
 </resources>
