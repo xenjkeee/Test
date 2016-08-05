@@ -1,6 +1,7 @@
 package test.adapters;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,7 +11,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import test.R;
 
 public class ImageAdapter extends BaseAdapter {
@@ -35,22 +39,32 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
 
+    static class ViewHolder {
+        @Bind(R.id.image_item)
+        ImageView imageView;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
     public View getView( int position, View convertView,
                         ViewGroup parent) {
-        ImageView picturesView;
+        ViewHolder viewHolder;
+
         if (convertView == null) {
-            picturesView = new ImageView(parent.getContext());
-            picturesView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            picturesView
-                    .setLayoutParams(new GridView.LayoutParams(270, 270));
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            convertView = inflater.inflate(R.layout.image_item,parent,false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
         } else {
-            picturesView = (ImageView) convertView;
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         Glide.with(parent.getContext()).load(images.get(position))
                 .placeholder(R.drawable.ic_attachment).centerCrop()
-                .into(picturesView);
-        return picturesView;
+                .into(viewHolder.imageView);
+        return convertView;
     }
 
 }
