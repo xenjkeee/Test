@@ -15,18 +15,13 @@ import test.R;
 
 public class ImageAdapter extends BaseAdapter {
 
-    private final Activity context;
     private ArrayList<String> images;
 
-    public ImageAdapter(Activity localContext, ArrayList<String> images, ArrayList<String> allShown) {
-        this(localContext);
+    public ImageAdapter(ArrayList<String> images, ArrayList<String> allShown) {
         this.images = images;
         this.images.addAll(allShown);
     }
 
-    private ImageAdapter(Activity localContext) {
-        context = localContext;
-    }
 
     public int getCount() {
         return images.size();
@@ -40,20 +35,19 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
 
-    public View getView(final int position, View convertView,
+    public View getView( int position, View convertView,
                         ViewGroup parent) {
         ImageView picturesView;
         if (convertView == null) {
-            picturesView = new ImageView(context);
+            picturesView = new ImageView(parent.getContext());
             picturesView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             picturesView
                     .setLayoutParams(new GridView.LayoutParams(270, 270));
-
         } else {
             picturesView = (ImageView) convertView;
         }
 
-        Glide.with(context).load(images.get(position))
+        Glide.with(parent.getContext()).load(images.get(position))
                 .placeholder(R.drawable.ic_attachment).centerCrop()
                 .into(picturesView);
         return picturesView;

@@ -33,7 +33,7 @@ public class GalleryFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.gallery_fragment, container, false);
         ButterKnife.bind(this,rootView);
         images = new ArrayList<>();
-        gallery.setAdapter(new ImageAdapter(getActivity(),images, getAllShownImagesPath(getActivity())));
+        gallery.setAdapter(new ImageAdapter(images, getAllShownImagesPath(getActivity())));
 
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
