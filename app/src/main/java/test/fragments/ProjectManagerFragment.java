@@ -36,7 +36,6 @@ import java.util.Set;
 
 public class ProjectManagerFragment extends Fragment {
     private SharedPreferences preferences;
-    private SharedPreferences.Editor preferencesEditor;
     private List<String> projectsList;
     private ItemAdapter adapter;
 
@@ -83,8 +82,6 @@ public class ProjectManagerFragment extends Fragment {
         ButterKnife.bind(this,rootView);
 
         preferences = getActivity().getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE);
-        preferencesEditor = preferences.edit();
-        preferencesEditor.apply();
         projectsList = new ArrayList<>();
         if(preferences.getStringSet(Constants.PROJECTS,null) != null)
             projectsList.addAll(preferences.getStringSet(Constants.PROJECTS,new HashSet<String>()));
@@ -142,22 +139,17 @@ public class ProjectManagerFragment extends Fragment {
                 if(!preferences.contains(Constants.PROJECTS)) {
                     Set<String> projects = new HashSet<>();
                     projects.add(intent.getStringExtra(Constants.SCAN_RESULT));
-                    preferencesEditor.putStringSet(Constants.PROJECTS, projects).apply();
+                    preferences.edit().putStringSet(Constants.PROJECTS, projects).apply();
                 }else{
                     Set<String> newSet = preferences.getStringSet(Constants.PROJECTS,null);
                     if (newSet != null) {
                         newSet.add(intent.getStringExtra(Constants.SCAN_RESULT));
                     }
-                    preferencesEditor.putStringSet(Constants.PROJECTS,newSet).apply();
+                    preferences.edit().putStringSet(Constants.PROJECTS,newSet).apply();
                 }
                 applyChangesPreferencesToList();
             }
         }
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        preferencesEditor.apply();
     }
 
     private void applyChangesListToPreferences() {
@@ -169,7 +161,7 @@ public class ProjectManagerFragment extends Fragment {
             if (stringSet != null) {
                 stringSet.addAll(projectsList);
             }
-        preferencesEditor.putStringSet(Constants.PROJECTS,stringSet).apply();
+        preferences.edit().putStringSet(Constants.PROJECTS,stringSet).apply();
         if (stringSet != null && stringSet.isEmpty()) {
             projectsFound.setVisibility(View.INVISIBLE);
             projectsNotFound.setVisibility(View.VISIBLE);

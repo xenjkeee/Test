@@ -60,13 +60,14 @@ public class GalleryFragment extends Fragment {
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = {MediaStore.MediaColumns.DATA,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,MediaStore.MediaColumns.DATE_MODIFIED};
 
         cursor = activity.getContentResolver().query(uri, projection, null,
-                null, null);
+                null, "3 desc");
 
         if (cursor != null) {
             column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+
             while (cursor.moveToNext()) {
                 absolutePathOfImage = cursor.getString(column_index_data);
 
@@ -74,6 +75,7 @@ public class GalleryFragment extends Fragment {
             }
             cursor.close();
         }
+
         return listOfAllImages;
     }
 }
