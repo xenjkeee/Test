@@ -86,7 +86,7 @@ public class ProjectManagerFragment extends Fragment {
         if(preferences.getStringSet(Constants.PROJECTS,null) != null)
             projectsList.addAll(preferences.getStringSet(Constants.PROJECTS,new HashSet<String>()));
         switchLayouts();
-        adapter = new ItemAdapter(getActivity(),projectsList,new DeleteProjectOnClickListener());
+        adapter = new ItemAdapter(projectsList,new DeleteProjectOnClickListener());
 
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

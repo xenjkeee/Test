@@ -18,11 +18,9 @@ import test.service.JsonParser;
 
 public class ItemAdapter extends BaseAdapter {
     private final List<String> objects;
-    private final Context context;
     private final ProjectManagerFragment.DeleteProjectOnClickListener listener;
 
-    public ItemAdapter(Context context, List<String> objects, ProjectManagerFragment.DeleteProjectOnClickListener listener) {
-        this.context = context;
+    public ItemAdapter(List<String> objects, ProjectManagerFragment.DeleteProjectOnClickListener listener) {
         this.objects = objects;
         this.listener = listener;
     }
@@ -50,12 +48,9 @@ public class ItemAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(R.layout.project_item, parent, false);
             viewHolder = new ViewHolder(convertView);
-
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
